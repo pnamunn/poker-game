@@ -70,6 +70,7 @@ class Player {
     private:
         Card cards[2];
     public:
+        Card cards[2];
         string name;
         int chips;
         Player *next = NULL, *last = NULL;
@@ -77,10 +78,18 @@ class Player {
     /* Constructor */
     Player() {}
 
+    void fold(Player *player) {
+        outPlayers.addPlayer(player);
+        inPlayers.removePlayer(player->name);
+        cout << player->name << " folded";
+    }
+
     void call(Player *player) {}
     void raise(Player *player) {}
+
     void showHand(Player *player) {
         for(int i=0; i<2; i++) {
+            // cout << player->cards[0] << " " << player->cards[1];   TODO create a template for << for Card class type
         }
     }
 
@@ -107,6 +116,14 @@ class Player {
 class PlayerList {
     public:
         Player *head = NULL, *tail = NULL;
+        int length = 0;
+    
+    public:
+        void addPlayer(Player *player, int num=0) {
+            // Player *player = new Player();
+            if(num != 0) {      // optional parameter
+                player->name = "Player" + to_string(num);
+            }
 
             if(head == NULL) {     // first Player in the list
                 head = player;
@@ -118,6 +135,8 @@ class PlayerList {
                 player->last = tail;    // new addition's last = tail
                 tail = player;        // new addition becomes new tail
             }
+            cout << player->name << " added " << head << " " << tail << "\n";
+            ++length;
         }
 
         void removePlayer(string name) {
@@ -126,17 +145,21 @@ class PlayerList {
             while(curr != NULL) {
                 if(curr->name == name) {
                     if(curr->next == NULL) {    // removing the last player in the list
+                    if(curr->next == NULL) {        // removing the last player in the list
                         curr->last->next = NULL;
                     }
                     else {
                         curr->last->next = curr->next;
                         curr->next->last = curr->last;
                     }
+                    // outPlayers.takePlayerOutGame(curr);
+                    cout << name << " out of game\n";
                     success = 1;
                 }
                 curr = curr->next;
             }
             if(!success)  cout << "That player name not found\n";
+            --length;
         }
 
         void listPlayers() {
@@ -146,10 +169,17 @@ class PlayerList {
             else {
                 Player *curr = head;
                 while(curr != NULL) {
+                    cout << curr->name << " " << curr << "\n";
                     curr = curr->next;
                 }
             }
         }
+
+        int getLength() {
+            return length;
+        }
+};
+
 // Globals
 PlayerList inPlayers, outPlayers;
 
@@ -193,6 +223,7 @@ class Deck : public Card {
 };
 
 Deck deck;
+
 
 class Dealer {
     public:
@@ -238,6 +269,8 @@ int main() {
     cin >> numPlayers;
 
     for (int i=1; i <= numPlayers; i++) {
+        Player *player = new Player();
+        inPlayers.addPlayer(player, i);
     }
 
 

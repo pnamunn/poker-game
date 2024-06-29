@@ -2,7 +2,6 @@
 #include "Card.h"
 
 
-
 Player::Player() {}
 
 void Player::modifyPool(int poolAdd, int playerMinus, Player &player) {

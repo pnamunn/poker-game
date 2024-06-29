@@ -1,6 +1,6 @@
 // No-limit Texas Hold'em
 
-#ifdef _WIN32 || _WIN64
+#ifdef _WIN32
     #include <windows.h>
 
 #elif __unix__              //  TODO test on unix system
@@ -23,7 +23,7 @@ using namespace std;
 
 
 void clearConsole() {
-    #if _WIN32 || _WIN64 
+    #if _WIN32
         system("cls");
     #elif __unix__ 
         system("clear");

@@ -4,6 +4,7 @@ using namespace std;
 #ifndef CARD_H
 #define CARD_H
 
+
 class Card {
     public:
         /* Default Constructor */
@@ -22,5 +23,6 @@ class Card {
         string getValueName();
 
 };
+
 
 #endif

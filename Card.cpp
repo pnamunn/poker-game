@@ -1,8 +1,8 @@
+#include "Card.h"
 #include <iostream>
 #include <string>
 using namespace std;
 
-#include "Card.h"
 
 Card::Card() {}
 

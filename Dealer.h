@@ -1,7 +1,10 @@
 #include "Card.h"
+#include "PlayerList.h"
+#include "Deck.h"
 
 #ifndef DEALER_H
 #define DEALER_H
+
 
 class Dealer {
     public:
@@ -28,5 +31,6 @@ class Dealer {
         static void flop();
 
 };
+
 
 #endif

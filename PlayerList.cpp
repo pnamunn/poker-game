@@ -1,12 +1,13 @@
 #include "PlayerList.h"
 #include "Player.h"
-
 #include <iostream>
 using namespace std;
 
 
+PlayerList::PlayerList() {}
+
 /* Add Player to PlayerList instance. */
-void PlayerList::addPlayer(Player &player, int num=0) {
+void PlayerList::addPlayer(Player &player, int num/*=0*/) {
     if(num != 0) {      // optional parameter, to be used when Player is new & does not have a name yet
         player.name = "Player" + to_string(num);
     }

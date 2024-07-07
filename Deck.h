@@ -15,8 +15,15 @@ class Deck : public Card {
         deckCards vector. */
         Deck();
 
-        /* Returns a random Card from the Deck and removes it from the deckCards vector. */
+        /* Returns a random Card from Deck instance and removes it from the deckCards vector. */
         Card drawRandomCard();
+
+        /* Traverses through deckCards vector and prints each Card. */
+        void printDeck();
+
+        // friend ostream &operator<<(ostream &output, Card &card);
+
+
 
 };
 

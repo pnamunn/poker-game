@@ -11,7 +11,10 @@ Dealer::Dealer() {}
 // poolTotal()
 // compareHands()
 
-/*static*/ void Dealer::determineDealer() {
+/*static*/ void Dealer::determineDealer(PlayerList &inPlayers) {
+    int chosenPlayer = rand() % (inPlayers.length) + 1;
+    cout << chosenPlayer;
+    inPlayers = inPlayers.changeHead(chosenPlayer);
 }
 
 /*static*/ void Dealer::blind(bool big) {
@@ -26,11 +29,19 @@ Dealer::Dealer() {}
         curr->cards[0] = deck.drawRandomCard();
         curr->cards[1] = deck.drawRandomCard();
         // TODO remove cards from deck
-        
-        cout << curr->cards[0].getSuitName() << ", " << curr->cards[0].getValueName() << "\t" 
-            << curr->cards[1].getSuitName() << ", " << curr->cards[1].getValueName() << "\n"; 
+                
+        // cout << curr->cards[0].getSuitName() << ", " << curr->cards[0].getValueName() << "\t" 
+        //     << curr->cards[1].getSuitName() << ", " << curr->cards[1].getValueName() << "\n"; 
         curr = curr->next;
+
+        // deck.printDeck();
+
+    // iterates thru deck & prints each card out
+    // curr = inPlayers.head;
+    // while(curr != NULL) {
+    //     cout << curr->c
     }
+    
 }
 
 /*static*/ void Dealer::flipCard() {

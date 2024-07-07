@@ -8,13 +8,11 @@
 
 #endif
 
-
 #include <iostream>
 #include <vector>
 #include <string>
 #include <cstdlib>
 using namespace std;
-
 #include "Card.h"
 #include "Deck.h"
 #include "Dealer.h"
@@ -32,6 +30,8 @@ void clearConsole() {
 
 //Globals
 int minBet = 5;
+
+
 PlayerList inPlayers, outPlayers;
 Deck deck;
 
@@ -49,7 +49,11 @@ int main() {
     }
 
     Dealer::dealCards(inPlayers, deck);
+    Dealer::determineDealer(inPlayers);
     
+    cout << "\n\nMain In player list:\n";
+    inPlayers.listPlayers();
+
 
 
 }

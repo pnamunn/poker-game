@@ -5,8 +5,17 @@ using namespace std;
 
 
 PlayerList::PlayerList() {}
+PlayerList::PlayerList(PlayerList &copyTarget) {
+    head = new Player;
+    *head = *(copyTarget.head);
 
-/* Add Player to PlayerList instance. */
+    tail = new Player;
+    *tail = *(copyTarget.tail);
+
+    length = copyTarget.length;
+}
+
+
 void PlayerList::addPlayer(Player &player, int num/*=0*/) {
     if(num != 0) {      // optional parameter, to be used when Player is new & does not have a name yet
         player.name = "Player" + to_string(num);
@@ -20,11 +29,11 @@ void PlayerList::addPlayer(Player &player, int num/*=0*/) {
         player.last = tail;    // new addition's last = tail
         tail = &player;        // new addition becomes new tail
     }
+
     cout << player.name << " added " << head << " " << tail << "\n";
+    length++;
 }
 
-/* Remove Player from PlayerList instance.  Stores the removed Player in
-a different PlayerList instance. */
 void PlayerList::removePlayer(string name, PlayerList &outPlayers) {
     Player *curr = head;
     bool success = 0;
@@ -40,6 +49,7 @@ void PlayerList::removePlayer(string name, PlayerList &outPlayers) {
             outPlayers.addPlayer(*curr);
             cout << name << " out of game\n";
             success = 1;
+            length--;
             break;
         }
         curr = curr->next;
@@ -47,7 +57,6 @@ void PlayerList::removePlayer(string name, PlayerList &outPlayers) {
     if(!success)  cout << "That player name not found\n";
 }
 
-/* List all Players in the PlayerList instance. */
 void PlayerList::listPlayers() {
     if(head == NULL) {
         cout << "Arrrg list be empty\n";
@@ -59,4 +68,52 @@ void PlayerList::listPlayers() {
             curr = curr->next;
         }
     }
+}
+
+PlayerList PlayerList::copyList() {
+    Player *originalCurr = head;
+
+}
+
+PlayerList PlayerList::changeHead(int nodeNum) {    // TODO improve efficiency
+    Player *newHead = NULL;
+    int count = 0;
+    // PlayerList newList;
+    PlayerList newList = *this;     // deep copy constructor
+    PlayerList tempList;         // will hold all Players before the chosenPlayer
+    Player *curr = head;
+    cout << "\n\n";
+    // traverse thru PlayerList until you're on node number nodeNum
+    while(count != nodeNum - 1) {
+        // tempList.addPlayer(*curr);
+        cout << "\ntraversing: " << curr->name;
+        curr = curr->next;
+        count++;
+    }
+    cout << "\ncurr is on " << curr->name;
+
+    // that node == new head & add in rest of list
+    newList.head = curr;
+    cout << "\nadding rest of list to new list: ";
+    while(curr != NULL) {
+        newList.addPlayer(*curr);
+        cout << "\ncurr->next is: " << curr->next << "\n";
+        curr = curr->next;
+    }
+
+    // add players that were before new head
+    cout << "head is " << head->name;
+    curr = head;
+    count = 0;
+    while(count != nodeNum - 1) {
+        newList.addPlayer(*curr);
+        curr = curr->next;
+        count++;
+    }
+    newList.tail->next = NULL;
+
+    cout << "\n\nNew player list:\n";
+    newList.listPlayers();
+
+    return newList;
 }

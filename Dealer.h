@@ -16,7 +16,7 @@ class Dealer {
 
         /* Determine which Player acts as Dealer for this round, and consequently
         which Players are posting the small & big blind this round. */
-        static void determineDealer();
+        static void determineDealer(PlayerList &inPlayers);
 
         /*  */
         static void blind(bool big);

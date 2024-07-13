@@ -17,7 +17,7 @@ class Player {
         Player();
 
         /* Modify pool value & Player's chips value after they bet. */
-        void modifyPool(int poolAdd, int playerMinus, Player &player);
+        void modifyPool(int poolAdd, int playerMinus=NULL);
 
         /* Player forfeits this round of the game. */
         void fold(Player &player);
@@ -37,9 +37,18 @@ class Player {
         /* Player reveals their cards. */
         void showHand(Player &player);
 
-        /* Helper function: Check if Player does not have enough chips for the bet
+
+        //  H    E   L   P   E   R   S
+
+        /* Check if Player does not have enough chips for the bet
         and is forced to go all-in. */
         void checkForceAllIn(int threshold, string moveName, Player &player);
+
+        /* Indicate which Player's confidential info is about to be showed. */
+        void turnHeader();
+
+
+        void promptBet();
 
 };
 

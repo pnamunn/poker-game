@@ -33,6 +33,8 @@ class PlayerList {
         the game, and therefore the Player turn order. */
         PlayerList changeHead(int nodeNum);
 
+        void preflopRound(int minBet);
+
 
 };
 

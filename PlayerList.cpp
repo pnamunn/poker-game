@@ -1,6 +1,7 @@
 #include "PlayerList.h"
 #include "Player.h"
 #include <iostream>
+#include <cmath>
 using namespace std;
 
 
@@ -111,9 +112,6 @@ PlayerList PlayerList::changeHead(int nodeNum) {    // TODO improve efficiency
         count++;
     }
     newList.tail->next = NULL;
-
-    cout << "\n\nNew player list:\n";
-    newList.listPlayers();
 
     return newList;
 }

@@ -28,8 +28,6 @@ void clearConsole() {
     #endif
 }
 
-//Globals
-int minBet = 5;
 
 
 PlayerList inPlayers, outPlayers;
@@ -51,9 +49,8 @@ int main() {
     Dealer::dealCards(inPlayers, deck);
     Dealer::determineDealer(inPlayers);
     
-    cout << "\n\nMain In player list:\n";
-    inPlayers.listPlayers();
-
+    Dealer::setMinBet(5);
+    Dealer::preflopRound(inPlayers);
 
 
 }

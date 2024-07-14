@@ -25,14 +25,8 @@ Card Deck::drawRandomCard() {
     cout << deckCards[random].suit << " " << deckCards[random].value << "\n";
     // Card drawnCard = deckCards[random];
     deckCards.erase(deckCards.begin() + random);
-    cout << "card removed from deck\n";
+    // cout << "card removed from deck\n";
 
-    vector<Card>::iterator it;
-    // for(auto it = deckCards.begin(); it != deckCards.end(); it++) {
-    //     // if(*it == deckCards[random]) {
-    //     //     deckCards.erase(random);
-    //     // }
-    // }
     return deckCards[random];
 }
 

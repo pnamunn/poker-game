@@ -20,13 +20,13 @@ using namespace std;
 #include "PlayerList.h"
 
 
-void clearConsole() {
-    #if _WIN32
-        system("cls");
-    #elif __unix__ 
-        system("clear");
-    #endif
-}
+// void clearConsole() {
+//     #if _WIN32
+//         system("cls");
+//     #elif __unix__ 
+//         system("clear");
+//     #endif
+// }
 
 
 

@@ -33,16 +33,18 @@ class Dealer {      // class carries out the game functions
         /*  */
         static void flop();
 
+        /*  */
         static void preflopRound(PlayerList &players);
+
 
 
         //  S   E   T   T   E   R   S   &
         //  G   E   T   T   E   R   S
 
-        static void setPool(int num);
+        static void addToPool(int num);
 
         static void setMinBet(int num);
-        static int getMinBet();
+        static const int getMinBet();
 
 };
 

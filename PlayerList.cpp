@@ -71,10 +71,10 @@ void PlayerList::listPlayers() {
     }
 }
 
-PlayerList PlayerList::copyList() {
-    Player *originalCurr = head;
+// PlayerList PlayerList::copyList() {
+//     Player *originalCurr = head;
 
-}
+// }
 
 PlayerList PlayerList::changeHead(int nodeNum) {    // TODO improve efficiency
     Player *newHead = NULL;

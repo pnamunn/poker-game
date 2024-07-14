@@ -27,13 +27,11 @@ class PlayerList {
         void listPlayers();
 
         /* Deep copies the PlayerList. */
-        PlayerList copyList();
+        // PlayerList copyList();
 
         /* Change the head of the PlayerList.  Used when picking the Dealer for
         the game, and therefore the Player turn order. */
         PlayerList changeHead(int nodeNum);
-
-        void preflopRound(int minBet);
 
 
 };

@@ -54,7 +54,7 @@ int Dealer:: minBet, Dealer::roundMin = 5;
     
 }
 
-/*static*/ void Dealer::preflopRound(PlayerList &inPlayers, PlayerList &outPlayers) {
+/*static*/ void Dealer::preflopRound(PlayerList &inPlayers) {
 
     // Small blind //
     Player *curr = inPlayers.head->next;
@@ -101,8 +101,6 @@ int Dealer:: minBet, Dealer::roundMin = 5;
 //  S   E   T   T   E   R   S   &
 //  G   E   T   T   E   R   S
 
-/*static*/ void Dealer::addToPool(int num) {
-    Dealer::pool += num;
 /*static*/ void Dealer::addToPool(int num) {
     Dealer::pool += num;
 }

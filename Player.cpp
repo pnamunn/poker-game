@@ -18,19 +18,6 @@ void Player::placeBet(int num) {
     }
 }
 
-void Player::placeBet(int num) {
-    if(num < this->chips) {        // Player doesn't bet all their chips
-        // cout << this->name << " bets " << num << "\n";
-        Dealer::addToPool(num);
-        this->chips -= num;
-    }
-    else {      // Player goes all in
-        // cout << this->name << " goes all in with " << this->chips << "\n";
-        Dealer::addToPool(this->chips);
-        this->chips = 0;
-    }
-}
-
 void Player::fold(Player &player) {     // sit out the game
     // outPlayers.addPlayer(player);
     // inPlayers.removePlayer(player->name);
@@ -76,17 +63,12 @@ void Player::checkForceAllIn(int threshold, string moveName, Player &player) {
 
 
 /*static*/ void Player::clearConsole() {
-/*static*/ void Player::clearConsole() {
     #if _WIN32
         system("cls");
     #elif __unix__ 
         system("clear");
     #endif
 }
-
-
-
-//  H   E   L   P   E   R   S
 
 
 
@@ -114,8 +96,6 @@ void Player::prompt() {
 
     cout << "\t\t\t\t\t***** FOR " << this->name << "'s EYES ONLY *****\n\n";
     cout << "\t Chips: " << this->chips << "\n";
-    cout << "\t Cards: " << this->cards[0].getValueName() << " of " << this->cards[0].getSuitName()
-         << "\t\t" << this->cards[1].getValueName() << " of " << this->cards[2].getSuitName() << "\n\n";
     cout << "\t Cards: " << this->cards[0].getValueName() << " of " << this->cards[0].getSuitName()
          << "\t\t" << this->cards[1].getValueName() << " of " << this->cards[2].getSuitName() << "\n\n";
 

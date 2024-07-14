@@ -21,6 +21,8 @@ string Card::getSuitName() {
             return "Diamonds";
         case Hearts:
             return "Hearts";
+        default:
+            return "getSuitName() error";
     }
 }
 string Card::getValueName() {
@@ -51,5 +53,7 @@ string Card::getValueName() {
             return "Queen";
         case King:
             return "King";
+        default:
+            return "getValueName() error";
     }
 }

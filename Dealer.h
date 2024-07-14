@@ -10,6 +10,7 @@ class Dealer {      // class carries out the game functions
     private:
         static int pool;
         static int minBet;
+        static int roundMin;    // Call value for this round.  Raises must be above this value.
 
     public:
         Card cards[5];
@@ -33,16 +34,21 @@ class Dealer {      // class carries out the game functions
         /*  */
         static void flop();
 
+        /*  */
         static void preflopRound(PlayerList &players);
+
 
 
         //  S   E   T   T   E   R   S   &
         //  G   E   T   T   E   R   S
 
-        static void setPool(int num);
+        static void addToPool(int num);
 
         static void setMinBet(int num);
-        static int getMinBet();
+        static const int getMinBet();
+
+        static void setRoundMin(int num);
+        static const int getRoundMin();
 
 };
 

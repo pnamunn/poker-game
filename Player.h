@@ -10,14 +10,14 @@ class Player {
     public:
         Card cards[2];
         string name;
-        int chips;
+        int chips = 100;
         Player *next = NULL, *last = NULL;
 
         /* Default Constructor */
         Player();
 
         /* Modify pool value & Player's chips value after they bet. */
-        void modifyPool(int poolAdd, int playerMinus=NULL);
+        void placeBet(int num);
 
         /* Player forfeits this round of the game. */
         void fold(Player &player);
@@ -31,8 +31,6 @@ class Player {
         /* Player chooses to double the betting minimum, or more. */
         void raise(Player &player);
 
-        /* */
-        void smallBlind(Player &player);
 
         /* Player reveals their cards. */
         void showHand(Player &player);
@@ -48,7 +46,10 @@ class Player {
         void turnHeader();
 
 
-        void promptBet();
+        void prompt();
+
+        static void clearConsole();
+
 
 };
 

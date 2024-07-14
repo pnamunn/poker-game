@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "PlayerList.h"
 #include "math.h"
+#include "math.h"
 
 
 Dealer::Dealer() {}
@@ -16,6 +17,7 @@ int Dealer:: minBet, Dealer::roundMin = 5;
     int chosenPlayer = rand() % (inPlayers.length) + 1;
     cout << chosenPlayer;
     inPlayers = inPlayers.changeHead(chosenPlayer);
+    cout << "\t\t\t\t\t *" << inPlayers.head->name << " will act as this game's dealer*\n\n";
     cout << "\t\t\t\t\t *" << inPlayers.head->name << " will act as this game's dealer*\n\n";
 }
 
@@ -101,9 +103,12 @@ int Dealer:: minBet, Dealer::roundMin = 5;
 
 /*static*/ void Dealer::addToPool(int num) {
     Dealer::pool += num;
+/*static*/ void Dealer::addToPool(int num) {
+    Dealer::pool += num;
 }
 
 /*static*/ void Dealer::setMinBet(int num) {
+    Dealer::minBet = num;
     Dealer::minBet = num;
 }
 /*static*/ const int Dealer::getMinBet() {

@@ -38,7 +38,6 @@ class Dealer {      // class carries out the game functions
         static void preflopRound(PlayerList &players);
 
 
-
         //  S   E   T   T   E   R   S   &
         //  G   E   T   T   E   R   S
 

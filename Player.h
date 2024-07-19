@@ -45,11 +45,9 @@ class Player {
         /* Indicate which Player's confidential info is about to be showed. */
         void turnHeader();
 
-
-        void prompt();
-
-        static void clearConsole();
-
+        /* Prompt Player to check, call, raise, or fold.
+           If in the preflop round, no check option is given. */
+        void prompt(bool preflop=0);
 
 };
 

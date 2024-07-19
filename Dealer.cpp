@@ -3,7 +3,7 @@
 #include "Deck.h"
 #include "Player.h"
 #include "PlayerList.h"
-#include "math.h"
+#include "helpers.h"
 #include "math.h"
 
 
@@ -17,7 +17,6 @@ int Dealer:: minBet, Dealer::roundMin = 5;
     int chosenPlayer = rand() % (inPlayers.length) + 1;
     cout << chosenPlayer;
     inPlayers = inPlayers.changeHead(chosenPlayer);
-    cout << "\t\t\t\t\t *" << inPlayers.head->name << " will act as this game's dealer*\n\n";
     cout << "\t\t\t\t\t *" << inPlayers.head->name << " will act as this game's dealer*\n\n";
 }
 
@@ -64,7 +63,6 @@ int Dealer:: minBet, Dealer::roundMin = 5;
     cout << "\t\t\t\t\t press enter to post the small blind of " << smallBlind << " chips -> ";
     cin.ignore();   // clear buffer after cin >> was used (in getting the number of players in main)
     cin.ignore(1000, '\n');
-    // cin.get();
     curr->placeBet(smallBlind);
     cout << "\t\t\t\t " << "After the small blind, you have " << curr->chips << " chips left\n\n";
     cout << "\t\t\t\t\t press enter to end your turn -> ";
@@ -74,11 +72,13 @@ int Dealer:: minBet, Dealer::roundMin = 5;
     // Big blind //
     curr = curr->next;
     int bigBlind;
-    Player::clearConsole();
+    clearConsole();
     cout << "\t\t\t\t\t ***** IT'S " << curr->name << "'s TURN *****\n\n";
     cout << "\t Chips: " << curr->chips << "\n";
     cout << "\t\t\t\t\t " << "Choose a big blind value to bet (>= " << Dealer::getMinBet() << "): ";
     cin >> bigBlind;    // TODO error checking
+    bigBlind = errorCheck(bigBlind, Dealer::getMinBet(),
+                ("\t\t\t\t Try again, your big blind has to be >=" + to_string(Dealer::getMinBet()) + ": "));
     Dealer::setRoundMin(bigBlind);
     curr->placeBet(bigBlind);
     cout << "\t\t\t\t You posted a big blind of " << bigBlind << " and have " << curr->chips << " chips left.\n\n";
@@ -93,8 +93,7 @@ int Dealer:: minBet, Dealer::roundMin = 5;
         curr->prompt();
         curr = curr->next;
     }
-
-    cout << "preFlop round done";
+    cout << "\n Preflop round done";
 }
 
 

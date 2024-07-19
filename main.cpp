@@ -11,6 +11,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <string>
 #include <cstdlib>
 using namespace std;
 #include "Card.h"
@@ -20,22 +21,14 @@ using namespace std;
 #include "PlayerList.h"
 
 
-// void clearConsole() {
-//     #if _WIN32
-//         system("cls");
-//     #elif __unix__ 
-//         system("clear");
-//     #endif
-// }
-
-
-
-PlayerList inPlayers, outPlayers;
-Deck deck;
+// PlayerList inPlayers, outPlayers;
+// Deck deck;
 
 
 int main() {
     srand(time(NULL));      // seed
+    PlayerList inPlayers, outPlayers;
+    Deck deck;
 
     int numPlayers;
     cout << "Enter number of players: ";
@@ -52,5 +45,5 @@ int main() {
     Dealer::setMinBet(5);
     Dealer::preflopRound(inPlayers);
 
-
 }
+

@@ -1,10 +1,10 @@
+#pragma once
+
 #include "Card.h"
 #include <iostream>
 using namespace std;
 
-#ifndef PLAYER_H
-#define PLAYER_H
-
+class PlayerList;
 
 class Player {
     public:
@@ -51,5 +51,3 @@ class Player {
 
 };
 
-
-#endif

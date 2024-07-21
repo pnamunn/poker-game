@@ -1,9 +1,8 @@
+#pragma once
+
 #include <string>
 #include <iostream>
 using namespace std;
-
-#ifndef HELPERS_H
-#define HELPERS_H
 
 
 static int errorCheck(int checkVar, int checkVal, string fail_msg) {
@@ -31,5 +30,3 @@ static void clearConsole() {
         system("clear");
     #endif
 }
-
-#endif

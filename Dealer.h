@@ -1,9 +1,8 @@
+#pragma once
+
 #include "Card.h"
 #include "PlayerList.h"
 #include "Deck.h"
-
-#ifndef DEALER_H
-#define DEALER_H
 
 
 class Dealer {      // class carries out the game functions
@@ -51,5 +50,3 @@ class Dealer {      // class carries out the game functions
 
 };
 
-
-#endif

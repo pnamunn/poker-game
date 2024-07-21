@@ -27,7 +27,8 @@ using namespace std;
 
 int main() {
     srand(time(NULL));      // seed
-    PlayerList inPlayers, outPlayers;
+    // PlayerList inPlayers, outPlayers;
+    PlayerList inPlayers = new PlayerList(true);
     Deck deck;
 
     int numPlayers;
@@ -39,11 +40,11 @@ int main() {
         inPlayers.addPlayer(*player, i);
     }
 
-    Dealer::dealCards(inPlayers, deck);
-    Dealer::determineDealer(inPlayers);
+    // Dealer::dealCards(inPlayers, deck);
+    // Dealer::determineDealer(inPlayers);
     
-    Dealer::setMinBet(5);
-    Dealer::preflopRound(inPlayers);
+    // Dealer::setMinBet(5);
+    // Dealer::preflopRound(inPlayers);
 
 }
 

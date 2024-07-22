@@ -37,6 +37,10 @@ class PlayerList {
         the game, and therefore the Player turn order. */
         void changeHead(int nodeNum);
 
+        /* Returns number of Players in PlayerList. */
+        int getLength();
+
+
 
 };
 

@@ -47,7 +47,7 @@ class Player {
 
         /* Prompt Player to check, call, raise, or fold.
            If in the preflop round, no check option is given. */
-        void prompt(bool preflop=0);
+        void turnPrompt(PlayerList &inPlayers, bool preflop=0);
 
 };
 

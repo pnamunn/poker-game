@@ -101,7 +101,7 @@ void PlayerList::listPlayers() {
 
 // }
 
-void PlayerList::changeHead(int nodeNum) {    // TODO improve efficiency
+void PlayerList::changeHead(int nodeNum) {
     int count = 0;
     Player *curr = head;
     while(count != nodeNum-1) {
@@ -150,3 +150,20 @@ void PlayerList::changeHead(int nodeNum) {    // TODO improve efficiency
 
 //     return newList;
 }
+
+int PlayerList::getLength() {
+    if(head == NULL) {
+        return 0;
+    }
+    else {
+        int count = 1;
+        Player *curr = head;
+        Player *last = head->last;
+        while(curr != last) {
+            count++;
+            curr = curr->next;
+        }
+        return count;
+    }
+}
+

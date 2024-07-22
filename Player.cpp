@@ -1,9 +1,12 @@
 #include "Player.h"
+#include "PlayerList.h"
 #include "Card.h"
 #include "Dealer.h"
 #include "helpers.h"
 #include <iostream>
 using namespace std;
+
+
 
 
 Player::Player() {}
@@ -77,7 +80,7 @@ void Player::turnHeader() {
 }
 
 
-void Player::prompt(bool preflop/*=0*/) {
+void Player::turnPrompt(PlayerList &inPlayers, bool preflop/*=0*/) {
     clearConsole();
 
     cout << "\t\t\t\t\t***** FOR " << this->name << "'s EYES ONLY *****\n\n";
@@ -128,7 +131,7 @@ void Player::prompt(bool preflop/*=0*/) {
                 int raiseVal;
                 cin >> raiseVal;
 
-                if(this->chips > raiseVal) {    // TODO error check if raiseVal is not greater than roundMin
+                if(this->chips > raiseVal) {
                     this->placeBet(raiseVal);
                     cout << "\t\t\t\t You raised to " << raiseVal << " and have " << this->chips << " chips left.\n";
                 }
@@ -142,6 +145,8 @@ void Player::prompt(bool preflop/*=0*/) {
             case 'f':   // FOLD
                 cout << "\t\t\t\t You choose to fold with " << this->chips << " chips left.\n\n";
                 // TODO take out player
+                inPlayers.removePlayer(this->name);
+                inPlayers.listPlayers();
             break;
 
             default:

@@ -14,33 +14,24 @@ int Dealer::pool = 0;
 int Dealer:: minBet, Dealer::roundMin = 5;
 
 /*static*/ void Dealer::determineDealer(PlayerList &inPlayers) {
-    int chosenPlayer = rand() % (inPlayers.length) + 1;
+    int chosenPlayer = rand() % (inPlayers.getLength()) + 1;     // range [1, inPlayer's length]
     cout << chosenPlayer;
-    inPlayers = inPlayers.changeHead(chosenPlayer);
+    inPlayers.changeHead(chosenPlayer);
     cout << "\t\t\t\t\t *" << inPlayers.head->name << " will act as this game's dealer*\n\n";
 }
 
 
 /*static*/ void Dealer::dealCards(PlayerList &inPlayers, Deck &deck) {
     Player *curr = inPlayers.head;
-    while(curr != NULL) {
+    do {
         cout << "Dealing cards to " << curr->name << "...\n";
         curr->cards[0] = deck.drawRandomCard();
         curr->cards[1] = deck.drawRandomCard();
-        // TODO remove cards from deck
                 
-        // cout << curr->cards[0].getSuitName() << ", " << curr->cards[0].getValueName() << "\t" 
-        //     << curr->cards[1].getSuitName() << ", " << curr->cards[1].getValueName() << "\n"; 
+        cout << curr->cards[0].getSuitName() << ", " << curr->cards[0].getValueName() << "\t" 
+             << curr->cards[1].getSuitName() << ", " << curr->cards[1].getValueName() << "\n"; 
         curr = curr->next;
-
-        // deck.printDeck();
-
-    // iterates thru deck & prints each card out
-    // curr = inPlayers.head;
-    // while(curr != NULL) {
-    //     cout << curr->c
-    }
-    
+    } while(curr != inPlayers.head);
 }
 
 /*static*/ void Dealer::flipCard() {
@@ -76,7 +67,7 @@ int Dealer:: minBet, Dealer::roundMin = 5;
     cout << "\t\t\t\t\t ***** IT'S " << curr->name << "'s TURN *****\n\n";
     cout << "\t Chips: " << curr->chips << "\n";
     cout << "\t\t\t\t\t " << "Choose a big blind value to bet (>= " << Dealer::getMinBet() << "): ";
-    cin >> bigBlind;    // TODO error checking
+    cin >> bigBlind;
     bigBlind = errorCheck(bigBlind, Dealer::getMinBet(),
                 ("\t\t\t\t Try again, your big blind has to be >=" + to_string(Dealer::getMinBet()) + ": "));
     Dealer::setRoundMin(bigBlind);
@@ -90,7 +81,7 @@ int Dealer:: minBet, Dealer::roundMin = 5;
     curr = curr->next;
     while(curr != NULL) {
         curr->turnHeader();
-        curr->prompt();
+        curr->turnPrompt(inPlayers);
         curr = curr->next;
     }
     cout << "\n Preflop round done";

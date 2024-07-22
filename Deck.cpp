@@ -22,12 +22,12 @@ Card Deck::drawRandomCard() {
     //     cout << cards[i].suit << " " << cards[i++].value << "\n";
     // }
     int random = rand() % 52;
-    cout << deckCards[random].suit << " " << deckCards[random].value << "\n";
-    // Card drawnCard = deckCards[random];
+    Card drawnCard = deckCards[random];
+    cout << drawnCard.suit << " " << drawnCard.value << "\n";
     deckCards.erase(deckCards.begin() + random);
     // cout << "card removed from deck\n";
 
-    return deckCards[random];
+    return drawnCard;
 }
 
 void Deck::printDeck() {

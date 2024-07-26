@@ -39,9 +39,27 @@ int main() {
         Player *player = new Player();
         inPlayers.addPlayer(*player, i);
     }
+    inPlayers.listPlayers();
 
-    // Dealer::dealCards(inPlayers, deck);
-    // Dealer::determineDealer(inPlayers);
+    // cout << inPlayers.outList;
+    // cout << inPlayers.outList->head << "\n";
+
+    // inPlayers.outList->outList = NULL;
+    // cout << inPlayers.outList->outList;
+    // cout << inPlayers.outList << "\n";
+    // cout << inPlayers.outList->head;
+
+    // inPlayers.removePlayer("Player3");
+    // inPlayers.listPlayers();
+
+    // inPlayers.changeHead(4);
+    // inPlayers.listPlayers();
+
+
+
+
+    Dealer::dealCards(inPlayers, deck);
+    Dealer::determineDealer(inPlayers);
     
     // Dealer::setMinBet(5);
     // Dealer::preflopRound(inPlayers);

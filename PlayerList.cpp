@@ -9,8 +9,9 @@ PlayerList::PlayerList() {}
   
 PlayerList::PlayerList(bool includeOutList) {
     if(includeOutList) {
-        outList = new PlayerList();     // uses Default Constructor (aka this list does not 
-                                        // have another outList list within it)
+        PlayerList x;
+        outList = &x;
+        cout << "outlist being used.  Head is " << outList->head << "\n";
     }
 }
 
@@ -29,17 +30,16 @@ void PlayerList::addPlayer(Player &player, int num/*=0*/) {
     if(num != 0) {      // optional parameter, to be used when Player is new & does not have a name yet
         player.name = "Player" + to_string(num);
     }
+    cout << "entered addPlayer()";
+    cout << "\n head : " << head;
     if(head == NULL) {     // first Player in the list
+        cout << "entered if head == NULL";
         head = &player;
+        cout << "head assign success";
         player.next = &player;
         player.last = &player;
-        // tail = &player;
     }
     else {
-        // tail->next = &player;    // tail's next = new addition
-        // player.last = tail;    // new addition's last = tail
-        // tail = &player;        // new addition becomes new tail
-
         if(head->next == head) {    // if adding second item in list
             head->next = &player;
         }
@@ -47,38 +47,44 @@ void PlayerList::addPlayer(Player &player, int num/*=0*/) {
         (head->last)->next = &player;
         head->last = &player;
         player.next = head;
-
     }
 
-    cout << player.name << " added " << &player << player.next << player.last << "\n";
-    cout << head->next << head->last << "\n";
+    cout << player.name << " added  " << &player << "\n";
 }
 
 void PlayerList::removePlayer(string name) {
     Player *curr = head;
-    Player *last = head->last;
-    bool success = 0;
-    while(curr != last) {
+    bool found = false;
+
+    do {
         if(curr->name == name) {
-            // if(curr->next == NULL) {        // if removing the last player in the list
-            //     curr->last->next = NULL;
-            // }
-            // else {
+            if(curr == head) {  // if removing head of list
+                if((head->next == head) && (head->last == head)) {  // if only one player left in list
+                    head = NULL;
+                    found = true;
+                    break;
+                }
+                else {
+                    head = curr->next;  // next in line becomes head
+                }
+            }
             (curr->last)->next = curr->next;
             (curr->next)->last = curr->last;
-            // }
-
-            if(outList != NULL) {   // if outList is being used & is not empty
-                outList->addPlayer(*curr);  // add removed player to the outPlayers list
-            }   // TODO add error checking statement for if outList == NULL
-
-            cout << name << " out of game\n";
-            success = 1;
+            found = true;
             break;
         }
         curr = curr->next;
+    } while(curr != head);
+
+    if(found) {
+        cout << name << " out of game\n";
+        if(outList != NULL) {   // if an outList is being used
+                outList->addPlayer(*curr);  // add player to outList
+            }
     }
-    if(!success)  cout << "That player name not found\n";
+    else {
+        cout << "That player name not found\n";
+    }
 }
 
 void PlayerList::listPlayers() {
@@ -87,12 +93,10 @@ void PlayerList::listPlayers() {
     }
     else {
         Player *curr = head;
-        Player* last = head->last;
-        while(curr != last) {
-            cout << curr->name << " " << curr << "\n";
+        do {
+            cout << curr->name << "\n";
             curr = curr->next;
-        }
-        cout << curr->name << " " << curr << "\n";      // print last player in list
+        } while(curr != head);
     }
 }
 

@@ -25,6 +25,7 @@ string Card::getSuitName() {
             return "getSuitName() error";
     }
 }
+
 string Card::getValueName() {
     switch(value) {
         case Ace:
@@ -56,4 +57,8 @@ string Card::getValueName() {
         default:
             return "getValueName() error";
     }
+}
+
+string Card::toString() {
+    return this->getValueName() + " of " + this->getSuitName();
 }

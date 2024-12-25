@@ -22,6 +22,9 @@ class Card {
         /* Map enum value to card value string. */
         string getValueName();
 
+        /* Print in format <ValueName> of <SuitName>. */
+        string toString();
+
 };
 
 

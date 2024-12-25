@@ -17,17 +17,11 @@ Deck::Deck() {
 }
 
 Card Deck::drawRandomCard() {
-    // int i = 0;
-    // while(i < 52) {
-    //     cout << cards[i].suit << " " << cards[i++].value << "\n";
-    // }
-    int random = rand() % 52;
-    cout << deckCards[random].suit << " " << deckCards[random].value << "\n";
-    // Card drawnCard = deckCards[random];
+    int random = rand() % 52;   // range is [0:51]
+    Card drawnCard = deckCards[random];
+    // cout << drawnCard.suit << " " << drawnCard.value << "\n";
     deckCards.erase(deckCards.begin() + random);
-    // cout << "card removed from deck\n";
-
-    return deckCards[random];
+    return drawnCard;
 }
 
 void Deck::printDeck() {
@@ -35,7 +29,7 @@ void Deck::printDeck() {
     // for(auto itr = deckCards.begin(); itr != deckCards.end(); itr++) {
     //     cout << *itr << "/n";
     // }
-    cout << "Printing deck: \n";
+    cout << "\nPrinting deck: \n";
     for(Card &card : deckCards) {
         cout << card.getSuitName() << ", ";
         cout << card.getValueName() << "\n";

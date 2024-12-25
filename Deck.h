@@ -15,7 +15,8 @@ class Deck : public Card {
         deckCards vector. */
         Deck();
 
-        /* Returns a random Card from Deck instance and removes it from the deckCards vector. */
+        /* Picks a random card from the deckCards vector, erases it from the
+        vector, and returns the Card object instance. */
         Card drawRandomCard();
 
         /* Traverses through deckCards vector and prints each Card. */

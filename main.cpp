@@ -13,12 +13,14 @@
 #include <string>
 #include <string>
 #include <cstdlib>
+#include <iomanip>
 using namespace std;
 #include "Card.h"
 #include "Deck.h"
 #include "Dealer.h"
 #include "Player.h"
 #include "PlayerList.h"
+#include "helpers.h"
 
 
 // PlayerList inPlayers, outPlayers;
@@ -29,6 +31,7 @@ int main() {
     srand(time(NULL));      // seed
     PlayerList inPlayers, outPlayers;
     Deck deck;
+    Card communityCard[5] = {Card()};
 
     int numPlayers;
     cout << "Enter number of players: ";
@@ -41,9 +44,39 @@ int main() {
 
     Dealer::dealCards(inPlayers, deck);
     Dealer::determineDealer(inPlayers);
+    clearConsole();
     
+    // PREFLOP
     Dealer::setMinBet(5);
     Dealer::preflopRound(inPlayers);
+    Dealer::goAroundTheTable(inPlayers);    // TODO go thru all players again here? or just remaining players
 
+
+    // FLOP
+    communityCard[0] = deck.drawRandomCard();
+    communityCard[1] = deck.drawRandomCard();
+    communityCard[2] = deck.drawRandomCard();
+    clearConsole();
+    cout << setw(15) << "** You made it to the Flop! **\n"
+         << "The first 3 community cards are:\n" 
+         << setw(20) << communityCard[0].toString() << "\n"
+         << setw(20) << communityCard[1].toString() << "\n"
+         << setw(20) << communityCard[2].toString();
+    enterToContinue();
+    
+    Dealer::goAroundTheTable(inPlayers);
+
+    // TURN
+    cout << "\n Welcome to the turn!";
+    enterToContinue();
+
+    Dealer::goAroundTheTable(inPlayers);
+
+
+    // RIVER
+
+
+    // SHOWDOWN
 }
 
+// TODO NEXT: test files needed for Card and Deck

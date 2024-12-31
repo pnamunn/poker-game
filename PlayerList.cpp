@@ -31,7 +31,7 @@ void PlayerList::addPlayer(Player &player, int num/*=0*/) {
         tail = &player;        // new addition becomes new tail
     }
 
-    cout << player.name << " added " << head << " " << tail << "\n";
+    // cout << player.name << " added " << head << " " << tail << "\n";
     length++;
 }
 
@@ -83,27 +83,27 @@ PlayerList PlayerList::changeHead(int nodeNum) {    // TODO improve efficiency
     PlayerList newList = *this;     // deep copy constructor
     PlayerList tempList;         // will hold all Players before the chosenPlayer
     Player *curr = head;
-    cout << "\n\n";
+    // cout << "\n\n";
     // traverse thru PlayerList until you're on node number nodeNum
     while(count != nodeNum - 1) {
         // tempList.addPlayer(*curr);
-        cout << "\ntraversing: " << curr->name;
+        // cout << "\ntraversing: " << curr->name;
         curr = curr->next;
         count++;
     }
-    cout << "\ncurr is on " << curr->name;
+    // cout << "\ncurr is on " << curr->name;
 
     // that node == new head & add in rest of list
     newList.head = curr;
-    cout << "\nadding rest of list to new list: ";
+    // cout << "\nadding rest of list to new list: ";
     while(curr != NULL) {
         newList.addPlayer(*curr);
-        cout << "\ncurr->next is: " << curr->next << "\n";
+        // cout << "\ncurr->next is: " << curr->next << "\n";
         curr = curr->next;
     }
 
     // add players that were before new head
-    cout << "head is " << head->name;
+    // cout << "head is " << head->name;
     curr = head;
     count = 0;
     while(count != nodeNum - 1) {

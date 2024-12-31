@@ -5,7 +5,7 @@
 #ifndef DEALER_H
 #define DEALER_H
 
-
+// TODO make singleton?
 class Dealer {      // class carries out the game functions
     private:
         static int pool;
@@ -31,15 +31,20 @@ class Dealer {      // class carries out the game functions
         /* Reveal a community card. */
         static void flipCard();
 
-        /*  */
-        static void flop();
+        /* Go thru list of players, showing them their info,
+        and prompting them for an action. */
+        static void goAroundTheTable(PlayerList &players);
 
-        /*  */
+        /* Pre-betting phase where first player sets small blind,
+        second player sets big blind, and remaining players 
+        go around the table. */
         static void preflopRound(PlayerList &players);
 
 
         //  S   E   T   T   E   R   S   &
         //  G   E   T   T   E   R   S
+
+        static void outputCommunityCards();
 
         static void addToPool(int num);
 

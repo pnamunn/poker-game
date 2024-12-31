@@ -1,26 +1,39 @@
 #include <string>
 #include <iostream>
+#include <iomanip>
 using namespace std;
 
 #ifndef HELPERS_H
 #define HELPERS_H
 
+enum conditions {GTE, GT};  // greater than or equal to (>=), greater than (>)
 
-static int errorCheck(int checkVar, int checkVal, string fail_msg) {
-    bool inputErrorFlag;
+static int errorCheck(int checkVar, conditions condition, int checkVal,
+                      string fail_msg) {
+    bool inputErrorFlag = 1;
     do {
-        inputErrorFlag = 0;
-        if(checkVar >= checkVal) {  // break so you can move on to success code
+        switch(condition) { // print out fail msg if they do not meet the condition & break
+            case GTE:
+                if(checkVar >= checkVal) {
+                    inputErrorFlag = 0;
+                    break;
+                }
+                // print fail msg & accept user input again
+                cout << fail_msg;
+                cin >> checkVar;
             break;
-        }
-        else {      // print fail msg & accept user input again
-            inputErrorFlag = 1;
-            cout << fail_msg;
-            cin >> checkVar;
+
+            case GT:
+                if(checkVar > checkVal) {
+                    inputErrorFlag = 0;
+                    break;
+                }
+                cout << fail_msg;
+                cin >> checkVar;
+            break;
         }
         cout << "\n";
     } while(inputErrorFlag == 1);
-
     return checkVar;
 }
 
@@ -30,6 +43,12 @@ static void clearConsole() {
     #elif __unix__ 
         system("clear");
     #endif
+}
+
+static void enterToContinue() {
+    cout << "\n" << setw(50) << "press enter to continue ->";
+    cin.ignore();
+    cin.ignore(1000, '\n');
 }
 
 #endif

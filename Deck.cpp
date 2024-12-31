@@ -13,11 +13,11 @@ Deck::Deck() {
             deckCards.push_back(aCard);
         }
     }
-    cout << "Full deck created...\n";
+    // cout << "Full deck created...\n";
 }
 
 Card Deck::drawRandomCard() {
-    int random = rand() % 52;   // range is [0:51]
+    int random = rand() % deckCards.size();
     Card drawnCard = deckCards[random];
     // cout << drawnCard.suit << " " << drawnCard.value << "\n";
     deckCards.erase(deckCards.begin() + random);

@@ -31,9 +31,12 @@ class Player {
         /* Player chooses to double the betting minimum, or more. */
         void raise(Player &player);
 
+        //  S   E   T   T   E   R   S   &
+        //  G   E   T   T   E   R   S   
 
-        /* Player reveals their cards. */
-        void showHand(Player &player);
+        /* Output Chips and the 2 Cards a Player has. */
+        void outputChipsAndCards();
+
 
 
         //  H    E   L   P   E   R   S
@@ -47,7 +50,7 @@ class Player {
 
         /* Prompt Player to check, call, raise, or fold.
            If in the preflop round, no check option is given. */
-        void prompt(bool preflop=0);
+        void giveActions(bool preflop=0);
 
 };
 

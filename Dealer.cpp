@@ -11,7 +11,8 @@ Dealer::Dealer() {}
 
 // Initialize static data members
 int Dealer::pool = 0;
-int Dealer:: minBet, Dealer::roundMin = 5;
+int Dealer::minBet, Dealer::roundMin = 5;
+vector<Card> Dealer::communityCards;
 
 /*static*/ void Dealer::determineDealer(PlayerList &inPlayers) {
     int chosenPlayer = rand() % (inPlayers.length) + 1;

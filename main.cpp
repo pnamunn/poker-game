@@ -31,7 +31,8 @@ int main() {
     srand(time(NULL));      // seed
     PlayerList inPlayers, outPlayers;
     Deck deck;
-    Card communityCard[5] = {Card()};
+    // Card communityCard[5] = {Card()};
+    // vector<Card> communityCards = {};
 
     int numPlayers;
     cout << "Enter number of players: ";
@@ -53,15 +54,19 @@ int main() {
 
 
     // FLOP
-    communityCard[0] = deck.drawRandomCard();
-    communityCard[1] = deck.drawRandomCard();
-    communityCard[2] = deck.drawRandomCard();
+    // communityCard[0] = deck.drawRandomCard();
+    // communityCard[1] = deck.drawRandomCard();
+    // communityCard[2] = deck.drawRandomCard();
+    Dealer::communityCards.push_back(deck.drawRandomCard());
+    Dealer::communityCards.push_back(deck.drawRandomCard());
+    Dealer::communityCards.push_back(deck.drawRandomCard());
+
     clearConsole();
     cout << setw(15) << "** You made it to the Flop! **\n"
-         << "The first 3 community cards are:\n" 
-         << setw(20) << communityCard[0].toString() << "\n"
-         << setw(20) << communityCard[1].toString() << "\n"
-         << setw(20) << communityCard[2].toString();
+         << "The first 3 community cards are:\n   " 
+         << Dealer::communityCards[0].toString() << "\n   "
+         << Dealer::communityCards[1].toString() << "\n   "
+         << Dealer::communityCards[2].toString();
     enterToContinue();
     
     Dealer::goAroundTheTable(inPlayers);

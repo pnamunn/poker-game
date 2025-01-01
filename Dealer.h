@@ -11,9 +11,10 @@ class Dealer {      // class carries out the game functions
         static int pool;
         static int minBet;
         static int roundMin;    // Call value for this round.  Raises must be above this value.
-
+        
     public:
-        Card cards[5];
+        // Card cards[5];
+        static vector<Card> communityCards;
 
         /* Default Constructor */
         Dealer();

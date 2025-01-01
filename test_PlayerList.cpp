@@ -103,4 +103,10 @@ TEST_F(RemovePlayerTest, removeAny) {
     EXPECT_EQ(list.outList->head->next->next, p4);
     EXPECT_EQ(list.outList->head->next->next->next, p2);
     EXPECT_EQ(list.outList->head->last, p2);
+    // list.outList->listPlayers();
+}
+
+int main(int argc, char **argv) {
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }

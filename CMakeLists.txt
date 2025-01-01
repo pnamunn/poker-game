@@ -23,16 +23,6 @@ include_directories(PlayerList.h Player.h)
 add_executable(test_PlayerList test_PlayerList.cpp PlayerList.cpp Player.cpp
 Card.cpp Dealer.cpp Deck.cpp)
 
-# add_executable(PlayerList PlayerList.cpp)
-
-# add_executable(Player Player.cpp)
-
-# add_executable(Card Card.cpp)
-
-# add_executable(Dealer Dealer.cpp)
-
-# add_executable(Deck Deck.cpp)
-
 target_link_libraries(test_PlayerList GTest::gtest_main)
 
 include(GoogleTest)

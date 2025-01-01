@@ -15,7 +15,7 @@ int Dealer:: minBet, Dealer::roundMin = 5;
 
 /*static*/ void Dealer::determineDealer(PlayerList &inPlayers) {
     int chosenPlayer = rand() % (inPlayers.getLength()) + 1;     // range [1, inPlayer's length]
-    cout << chosenPlayer;
+    // cout << chosenPlayer;
     inPlayers.changeHead(chosenPlayer);
     cout << "\t\t\t\t\t *" << inPlayers.head->name << " will act as this game's dealer*\n\n";
 }
@@ -27,9 +27,6 @@ int Dealer:: minBet, Dealer::roundMin = 5;
         cout << "Dealing cards to " << curr->name << "...\n";
         curr->cards[0] = deck.drawRandomCard();
         curr->cards[1] = deck.drawRandomCard();
-                
-        cout << curr->cards[0].getSuitName() << ", " << curr->cards[0].getValueName() << "\t" 
-             << curr->cards[1].getSuitName() << ", " << curr->cards[1].getValueName() << "\n"; 
         curr = curr->next;
     } while(curr != inPlayers.head);
 }

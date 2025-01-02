@@ -6,6 +6,8 @@ using namespace std;
 #define PLAYER_H
 
 
+class PlayerList;
+
 class Player {
     public:
         Card cards[2];
@@ -53,6 +55,5 @@ class Player {
         void giveActions(bool preflop=0);
 
 };
-
 
 #endif

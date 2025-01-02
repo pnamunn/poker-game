@@ -1,8 +1,7 @@
+#pragma once
+
 #include <string>
 using namespace std;
-
-#ifndef CARD_H
-#define CARD_H
 
 
 class Card {
@@ -27,5 +26,3 @@ class Card {
 
 };
 
-
-#endif

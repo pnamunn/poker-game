@@ -6,56 +6,86 @@ using namespace std;
 
 
 PlayerList::PlayerList() {}
-PlayerList::PlayerList(PlayerList &copyTarget) {
-    head = new Player;
-    *head = *(copyTarget.head);
-
-    tail = new Player;
-    *tail = *(copyTarget.tail);
-
-    length = copyTarget.length;
+  
+PlayerList::PlayerList(bool includeOutList) {
+    if(includeOutList) {
+        PlayerList x;
+        outList = &x;
+        // cout << "outlist being used.  Head is " << outList->head << "\n";
+    }
 }
+
+// PlayerList::PlayerList(PlayerList &copyTarget) {
+//     head = new Player;
+//     *head = *(copyTarget.head);
+
+//     tail = new Player;
+//     *tail = *(copyTarget.tail);
+
+//     length = copyTarget.length;
+// }
 
 
 void PlayerList::addPlayer(Player &player, int num/*=0*/) {
     if(num != 0) {      // optional parameter, to be used when Player is new & does not have a name yet
         player.name = "Player" + to_string(num);
     }
+    // cout << "entered addPlayer()";
+    // cout << "\n head : " << head;
     if(head == NULL) {     // first Player in the list
+        // cout << "entered if head == NULL";
         head = &player;
-        tail = &player;
+        // cout << "head assign success";
+        player.next = &player;
+        player.last = &player;
     }
     else {
-        tail->next = &player;    // tail's next = new addition
-        player.last = tail;    // new addition's last = tail
-        tail = &player;        // new addition becomes new tail
+        if(head->next == head) {    // if adding second item in list
+            head->next = &player;
+        }
+        player.last = head->last;
+        (head->last)->next = &player;
+        head->last = &player;
+        player.next = head;
     }
 
-    // cout << player.name << " added " << head << " " << tail << "\n";
-    length++;
+    // cout << player.name << " added  " << &player << "\n";
 }
 
-void PlayerList::removePlayer(string name, PlayerList &outPlayers) {
+void PlayerList::removePlayer(string name) {
     Player *curr = head;
-    bool success = 0;
-    while(curr != NULL) {
+    bool found = false;
+
+    do {
         if(curr->name == name) {
-            if(curr->next == NULL) {        // if removing the last player in the list
-                curr->last->next = NULL;
+            if(curr == head) {  // if removing head of list
+                if((head->next == head) && (head->last == head)) {  // if only one player left in list
+                    head = NULL;
+                    found = true;
+                    break;
+                }
+                else {
+                    head = curr->next;  // next in line becomes head
+                }
             }
-            else {
-                curr->last->next = curr->next;
-                curr->next->last = curr->last;
-            }
-            outPlayers.addPlayer(*curr);
-            cout << name << " out of game\n";
-            success = 1;
-            length--;
+            (curr->last)->next = curr->next;
+            (curr->next)->last = curr->last;
+            found = true;
             break;
         }
         curr = curr->next;
+    } while(curr != head);
+
+    if(found) {
+        // cout << name << " out of game\n";
+        if(outList != NULL) {   // if an outList is being used
+                outList->addPlayer(*curr);  // add player to outList
+            }
+        // TODO if outlist not being used, just erase player from inList
     }
-    if(!success)  cout << "That player name not found\n";
+    else {
+        cout << "That player name not found\n";
+    }
 }
 
 void PlayerList::listPlayers() {
@@ -64,54 +94,37 @@ void PlayerList::listPlayers() {
     }
     else {
         Player *curr = head;
-        while(curr != NULL) {
-            cout << curr->name << " " << curr << "\n";
+        do {
+            cout << curr->name << "\n";
             curr = curr->next;
-        }
+        } while(curr != head);
     }
 }
 
-// PlayerList PlayerList::copyList() {
-//     Player *originalCurr = head;
-
-// }
-
-PlayerList PlayerList::changeHead(int nodeNum) {    // TODO improve efficiency
-    Player *newHead = NULL;
+void PlayerList::changeHead(int nodeNum) {
     int count = 0;
-    // PlayerList newList;
-    PlayerList newList = *this;     // deep copy constructor
-    PlayerList tempList;         // will hold all Players before the chosenPlayer
     Player *curr = head;
-    // cout << "\n\n";
-    // traverse thru PlayerList until you're on node number nodeNum
-    while(count != nodeNum - 1) {
-        // tempList.addPlayer(*curr);
-        // cout << "\ntraversing: " << curr->name;
+    while(count != nodeNum-1) {
         curr = curr->next;
         count++;
     }
     // cout << "\ncurr is on " << curr->name;
-
-    // that node == new head & add in rest of list
-    newList.head = curr;
-    // cout << "\nadding rest of list to new list: ";
-    while(curr != NULL) {
-        newList.addPlayer(*curr);
-        // cout << "\ncurr->next is: " << curr->next << "\n";
-        curr = curr->next;
-    }
-
-    // add players that were before new head
-    // cout << "head is " << head->name;
-    curr = head;
-    count = 0;
-    while(count != nodeNum - 1) {
-        newList.addPlayer(*curr);
-        curr = curr->next;
-        count++;
-    }
-    newList.tail->next = NULL;
-
-    return newList;
+    head = curr;
 }
+
+int PlayerList::getLength() {
+    if(head == NULL) {
+        return 0;
+    }
+    else {
+        int count = 1;
+        Player *curr = head;
+        Player *last = head->last;
+        while(curr != last) {
+            count++;
+            curr = curr->next;
+        }
+        return count;
+    }
+}
+

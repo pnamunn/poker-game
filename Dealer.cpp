@@ -15,9 +15,9 @@ int Dealer::minBet, Dealer::roundMin = 5;
 vector<Card> Dealer::communityCards;
 
 /*static*/ void Dealer::determineDealer(PlayerList &inPlayers) {
-    int chosenPlayer = rand() % (inPlayers.length) + 1;
-    // cout << chosenPlayer;
-    inPlayers = inPlayers.changeHead(chosenPlayer);
+    int chosenPlayer = rand() % (inPlayers.getLength()) + 1;     // range [1, inPlayer's length]
+    // // cout << chosenPlayer;
+    inPlayers.changeHead(chosenPlayer);
     cout << "* " << inPlayers.head->name << " will act as this game's dealer *";
     enterToContinue();
 }
@@ -25,23 +25,12 @@ vector<Card> Dealer::communityCards;
 
 /*static*/ void Dealer::dealCards(PlayerList &inPlayers, Deck &deck) {
     Player *curr = inPlayers.head;
-    while(curr != NULL) {
+    do {
         // cout << "Dealing cards to " << curr->name << "...\n";
         curr->cards[0] = deck.drawRandomCard();
         curr->cards[1] = deck.drawRandomCard();
-        // TODO remove cards from deck
-                
-        // cout << curr->cards[0].getSuitName() << ", " << curr->cards[0].getValueName() << "\t" 
-        //     << curr->cards[1].getSuitName() << ", " << curr->cards[1].getValueName() << "\n"; 
         curr = curr->next;
-
-        // deck.printDeck();
-
-    // iterates thru deck & prints each card out
-    // curr = inPlayers.head;
-    // while(curr != NULL) {
-    //     cout << curr->c
-    }
+    } while(curr != inPlayers.head);
     
 }
 
@@ -90,6 +79,7 @@ vector<Card> Dealer::communityCards;
 }
 
 /*static*/ void Dealer::goAroundTheTable(PlayerList &inPlayers) {
+    // TODO change to be compatible with doubly linked circular list
     Player *curr = inPlayers.head->next;
     while(curr != NULL) {
         // curr->turnHeader();

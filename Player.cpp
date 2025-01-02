@@ -1,9 +1,12 @@
 #include "Player.h"
+#include "PlayerList.h"
 #include "Card.h"
 #include "Dealer.h"
 #include "helpers.h"
 #include <iostream>
 using namespace std;
+
+
 
 
 Player::Player() {}
@@ -149,6 +152,8 @@ void Player::giveActions(bool preflop/*=0*/) {
             case 'f':   // FOLD
                 cout << setw(10) << "You chose to fold with " << this->chips << " chips left.\n";
                 // TODO take out player
+                // inPlayers.removePlayer(this->name);
+                // inPlayers.listPlayers();
             break;
 
             // case '^C':

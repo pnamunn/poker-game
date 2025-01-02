@@ -29,7 +29,8 @@ using namespace std;
 
 int main() {
     srand(time(NULL));      // seed
-    PlayerList inPlayers, outPlayers;
+    // PlayerList inPlayers, outPlayers;
+    PlayerList inPlayers = new PlayerList(true);
     Deck deck;
     // Card communityCard[5] = {Card()};
     // vector<Card> communityCards = {};
@@ -42,6 +43,24 @@ int main() {
         Player *player = new Player();
         inPlayers.addPlayer(*player, i);
     }
+    inPlayers.listPlayers();
+
+    // cout << inPlayers.outList;
+    // cout << inPlayers.outList->head << "\n";
+
+    // inPlayers.outList->outList = NULL;
+    // cout << inPlayers.outList->outList;
+    // cout << inPlayers.outList << "\n";
+    // cout << inPlayers.outList->head;
+
+    // inPlayers.removePlayer("Player3");
+    // inPlayers.listPlayers();
+
+    // inPlayers.changeHead(4);
+    // inPlayers.listPlayers();
+
+
+
 
     Dealer::dealCards(inPlayers, deck);
     Dealer::determineDealer(inPlayers);

@@ -57,5 +57,4 @@ class Dealer {      // class carries out the game functions
 
 };
 
-
 #endif

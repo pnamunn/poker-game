@@ -4,31 +4,30 @@
 #include <iostream>
 using namespace std;
 
-
+/*
+Circular doubly linked list to make methods like changeHead() and 
+Dealer::goAroundTheTable() easier to implement.
+*/
 class PlayerList {
     public:
         Player *head = NULL;
-        PlayerList *outList = NULL;
+        PlayerList *outOfGame = NULL;   // if needed, init this to point to another list
 
         /* Default Constructor */
-        PlayerList();
+        PlayerList(PlayerList *outOfGameList);
 
         // /* Deep Copy Constructor.makes a deep copy of another PlayerList instance. */
         // PlayerList(PlayerList &copyTarget);
 
-        /* Constructor that has a PlayerList instance data member within it
-        to store Players that you remove from this instance. */
-        PlayerList(bool includeOutList);
-
-        /* Add Player to PlayerList instance. */
+        /* Add Player to the end of the PlayerList linked list. */
         void addPlayer(Player &player, int num=0);
 
-        /* Remove Player from PlayerList instance & move it into to it's
-        outPlayers PlayerList data member. */
+        /* Remove Player from PlayerList linked list.
+        If the outOfGame datamember has been init'ed, adds it onto that list. */
         void removePlayer(string name);
 
         /* List all Players in the PlayerList instance. */
-        void listPlayers();
+        void listPlayers(bool listOutPlayers=0);
 
         /* Deep copies the PlayerList. */
         // PlayerList copyList();

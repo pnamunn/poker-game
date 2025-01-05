@@ -79,11 +79,9 @@ vector<Card> Dealer::communityCards;
 }
 
 /*static*/ void Dealer::goAroundTheTable(PlayerList &inPlayers) {
-    // TODO change to be compatible with doubly linked circular list
-    Player *curr = inPlayers.head->next;
-    while(curr != NULL) {
-        // curr->turnHeader();
-        clearConsole();
+        Player *curr = inPlayers.head;
+    do {
+                clearConsole();
         cout << setw(15) << "***** For " << curr->name << "'s eyes only *****\n";
         enterToContinue();
 
@@ -94,7 +92,7 @@ vector<Card> Dealer::communityCards;
         }
         curr->giveActions();
         curr = curr->next;
-    }
+    } while(curr != inPlayers.head);
 }
 
 

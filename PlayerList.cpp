@@ -5,15 +5,10 @@
 using namespace std;
 
 
-PlayerList::PlayerList() {}
-  
-PlayerList::PlayerList(bool includeOutList) {
-    if(includeOutList) {
-        PlayerList x;
-        outList = &x;
-        // cout << "outlist being used.  Head is " << outList->head << "\n";
-    }
+PlayerList::PlayerList(PlayerList *outOfGameList) {
+    this->outOfGame = outOfGameList;
 }
+
 
 // PlayerList::PlayerList(PlayerList &copyTarget) {
 //     head = new Player;
@@ -48,14 +43,12 @@ void PlayerList::addPlayer(Player &player, int num/*=0*/) {
         head->last = &player;
         player.next = head;
     }
-
     // cout << player.name << " added  " << &player << "\n";
 }
 
 void PlayerList::removePlayer(string name) {
     Player *curr = head;
     bool found = false;
-
     do {
         if(curr->name == name) {
             if(curr == head) {  // if removing head of list
@@ -75,29 +68,45 @@ void PlayerList::removePlayer(string name) {
         }
         curr = curr->next;
     } while(curr != head);
+    // cout << "sucessfully removed from inlist";
 
     if(found) {
-        // cout << name << " out of game\n";
-        if(outList != NULL) {   // if an outList is being used
-                outList->addPlayer(*curr);  // add player to outList
-            }
-        // TODO if outlist not being used, just erase player from inList
+        if(outOfGame != NULL) {   // if the outOfGame list is being used
+            outOfGame->addPlayer(*curr);  // add player to outList
+            // cout << "Player '" << name << "' removed and placed in outList.\n";
+        }
+        else {
+            // cout << "Player '" << name << "' removed.\n";
+        }
     }
     else {
-        cout << "That player name not found\n";
+        cout << "Cannot remove.  Player name '" << name << "' not found.\n";
     }
 }
 
-void PlayerList::listPlayers() {
-    if(head == NULL) {
+void PlayerList::listPlayers(bool listOutPlayers/*=0*/) {
+    if((head == NULL) && (outOfGame == NULL)) {
+         // if both this list & this list's outOfGame list is empty
         cout << "Arrrg list be empty\n";
     }
     else {
         Player *curr = head;
+        cout << "Listing players...\n";
         do {
             cout << curr->name << "\n";
             curr = curr->next;
         } while(curr != head);
+        cout << "\n";
+
+        if((listOutPlayers) && (outOfGame != NULL)) {
+            Player *currOutList = outOfGame->head;
+            cout << "Listing players out of game...\n";
+            do {
+                cout << currOutList->name << "\n";
+                currOutList = currOutList->next;
+            } while(currOutList != outOfGame->head);
+            cout << "\n";
+        }
     }
 }
 

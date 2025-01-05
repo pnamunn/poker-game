@@ -29,8 +29,8 @@ using namespace std;
 
 int main() {
     srand(time(NULL));      // seed
-    // PlayerList inPlayers, outPlayers;
-    PlayerList inPlayers = new PlayerList(true);
+    PlayerList outPlayers(NULL);
+    PlayerList players(&outPlayers);
     Deck deck;
     // Card communityCard[5] = {Card()};
     // vector<Card> communityCards = {};
@@ -41,35 +41,25 @@ int main() {
 
     for (int i=1; i <= numPlayers; i++) {
         Player *player = new Player();
-        inPlayers.addPlayer(*player, i);
+        players.addPlayer(*player, i);
     }
-    inPlayers.listPlayers();
-
-    // cout << inPlayers.outList;
-    // cout << inPlayers.outList->head << "\n";
-
-    // inPlayers.outList->outList = NULL;
-    // cout << inPlayers.outList->outList;
-    // cout << inPlayers.outList << "\n";
-    // cout << inPlayers.outList->head;
-
-    // inPlayers.removePlayer("Player3");
-    // inPlayers.listPlayers();
-
-    // inPlayers.changeHead(4);
-    // inPlayers.listPlayers();
+    
+    // players.listPlayers();
+    // cout << "done listing players";
+    // players.removePlayer("Player2");
+    // cout << "just removed player2";
+    // players.listPlayers(true);
+    // cout << "just listed players after moving one to outList";
 
 
-
-
-    Dealer::dealCards(inPlayers, deck);
-    Dealer::determineDealer(inPlayers);
+    Dealer::dealCards(players, deck);
+    Dealer::determineDealer(players);
     clearConsole();
     
     // PREFLOP
     Dealer::setMinBet(5);
-    Dealer::preflopRound(inPlayers);
-    Dealer::goAroundTheTable(inPlayers);    // TODO go thru all players again here? or just remaining players
+    Dealer::preflopRound(players);
+    Dealer::goAroundTheTable(players);    // TODO go thru just the remaining players, & continue until an ante is agreed on
 
 
     // FLOP
@@ -88,13 +78,13 @@ int main() {
          << Dealer::communityCards[2].toString();
     enterToContinue();
     
-    Dealer::goAroundTheTable(inPlayers);
+    Dealer::goAroundTheTable(players);
 
     // TURN
     cout << "\n Welcome to the turn!";
     enterToContinue();
 
-    Dealer::goAroundTheTable(inPlayers);
+    Dealer::goAroundTheTable(players);
 
 
     // RIVER

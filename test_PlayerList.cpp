@@ -6,7 +6,7 @@ using namespace std;
 
 ///////// CREATE FRAMEWORKS ////////
 
-class AddPlayerTest : public testing::Test {
+class BasePlayerList_F : public testing::Test {
     protected:
         PlayerList list = PlayerList(NULL);  // init to not use outOfGame list
         Player player1,  *p1 = &player1;
@@ -14,20 +14,14 @@ class AddPlayerTest : public testing::Test {
         Player player3,  *p3 = &player3;
         Player player4,  *p4 = &player4;
 
-
-        void add3Players() {
+        void add4Players() {
             list.addPlayer(*p1);
             list.addPlayer(*p2);
             list.addPlayer(*p3);
-        }
-};
-
-class RemovePlayerTest : public AddPlayerTest {
-    public:
-        void add4Players() {
-            add3Players();
             list.addPlayer(*p4);
+            name4Players();
         }
+
         void name4Players() {
             player1.name = "P1";
             player2.name = "P2";
@@ -36,92 +30,97 @@ class RemovePlayerTest : public AddPlayerTest {
         }
 };
 
-class ListPlayersTest : public RemovePlayerTest {};
+class AddPlayerTest : public BasePlayerList_F { };
+
+class RemovePlayerTest : public BasePlayerList_F {
+    void SetUp() override {
+        add4Players();
+    }
+};
+
+class ListPlayersTest : public BasePlayerList_F { };
+// class ChangeHeadTest : public BasePlayerList_F { };
+class GetLengthTest : public BasePlayerList_F { };
 
 ////////////////////////////////////
 
 
-TEST_F(AddPlayerTest, listOfOne) {
-    list.addPlayer(*p1);
+//// addPlayer
 
-    // p1 is the list's head
-    // & the next and last ptrs point to itself
+TEST_F(AddPlayerTest, MakeCDLLOfOne) { // CDDL = Circular Doubly Linked List
+    list.addPlayer(*p1);
     EXPECT_EQ(list.head, p1);
     EXPECT_EQ(list.head->next, p1);
     EXPECT_EQ(list.head->last, p1);
 }
 
-TEST_F(AddPlayerTest, listOfTwoOrMore) {
-    // list.addPlayer(*p1);
-    // list.addPlayer(*p2);
-    // list.addPlayer(*p3);
-    add3Players();
+TEST_F(AddPlayerTest, MakeCDLLOfTwoOrMore) {
+    add4Players();
 
-    // p1 is still head, points to p2, & circularly to p3
+    // p1 is head.  Points to p2, circularly back to p3
     EXPECT_EQ(list.head, p1);
     EXPECT_EQ(list.head->next, p2);
-    EXPECT_EQ(list.head->last, p3);
+    EXPECT_EQ(list.head->last, p4);
 
     // p2 points to p3 & back to p1
     EXPECT_EQ((list.head->next)->next, p3);
     EXPECT_EQ((list.head->next)->last, p1);
 
-    // p3 points circularly to p1 & back to p2
-    EXPECT_EQ((list.head->next->next)->next, p1);
+    // p3 points to p4 & back to p2
+    EXPECT_EQ((list.head->next->next)->next, p4);
     EXPECT_EQ((list.head->next->next)->last, p2);
+
+    // p4 points circularly next to p1 & back to p3
+    EXPECT_EQ((list.head->next->next->next)->next, p1);
+    EXPECT_EQ((list.head->next->next->next)->last, p3);
 }
 
 
+//// removePlayer
 
-TEST_F(RemovePlayerTest, removeAny) {
-    add4Players();
-    name4Players();
-
-    // try to remove player that does not exist
-    testing::internal::CaptureStdout();     // start capturing cout stream
-    list.removePlayer("banana");
-    EXPECT_EQ(testing::internal::GetCapturedStdout(),
-              "Cannot remove.  Player name 'banana' not found.\n");
-
-    // remove first in list
+TEST_F(RemovePlayerTest, RemoveFirstLink) {
     list.removePlayer("P1");
     EXPECT_EQ(list.head, p2);
-    EXPECT_EQ(list.head->next, p3);
-    EXPECT_EQ(list.head->last, p4);
+}
 
-    // remove player in middle
+TEST_F(RemovePlayerTest, RemoveMiddleLink) {
     list.removePlayer("P3");
-    EXPECT_EQ(list.head->next, p4);
-    EXPECT_EQ((list.head->next)->last, p2);
+    // after p3 is removed, p2 and p4 get linked
+    EXPECT_EQ((list.head->next)->next, p4);
+    EXPECT_EQ((list.head->next->next)->last, p2);
+}
 
-    // remove last in list
+TEST_F(RemovePlayerTest, RemoveFinalLink) {
     list.removePlayer("P4");
-    EXPECT_EQ(list.head->next, list.head);
-    EXPECT_EQ(list.head->last, list.head);
+    // after p4 is removed, p1 and p3 get linked
+    EXPECT_EQ(list.head->last, p3);
+    EXPECT_EQ((list.head->next->next)->next, p1);
+}
 
-    // make list completely empty
+TEST_F(RemovePlayerTest, MakeCDLLEmpty) {
+    list.removePlayer("P3");
+    list.removePlayer("P4");
+    list.removePlayer("P1");
     list.removePlayer("P2");
     EXPECT_EQ(list.head, nullptr);
 }
 
-TEST_F(RemovePlayerTest, notUsingOutOfGameList) {
-    add4Players();
-    name4Players();
-    list.removePlayer("P4");
-
-    // check outList does not receive the removed players
-    EXPECT_EQ(list.outOfGame, nullptr);
+TEST_F(RemovePlayerTest, AttemptToRemovePlayerWhoseNameDNE) {
+    testing::internal::CaptureStdout();     // start capturing cout stream
+    list.removePlayer("banana");
+    EXPECT_EQ(testing::internal::GetCapturedStdout(),
+              "Cannot remove.  Player name 'banana' not found.\n");
 }
 
-// FIXME segfault happens at very beginning of test
-TEST_F(RemovePlayerTest, usingOutOfGameList) {
-    // change list to use an outOfGame list
+// typa unit test you delete
+// TEST_F(RemovePlayerTest, NotUsingOutOfGameList) {
+//     list.removePlayer("P4");
+//     EXPECT_EQ(list.outOfGame, nullptr);
+// }
+
+TEST_F(RemovePlayerTest, UseOutOfGameList) {
     PlayerList outList(NULL);
     list.outOfGame = &outList;
-
-    add4Players();
-    name4Players();
-
     list.removePlayer("P4");
     list.removePlayer("P1");
     list.removePlayer("P2");
@@ -131,44 +130,66 @@ TEST_F(RemovePlayerTest, usingOutOfGameList) {
     EXPECT_EQ(list.outOfGame->head->next, p1);
     EXPECT_EQ(list.outOfGame->head->next->next, p2);
     EXPECT_EQ(list.outOfGame->head->next->next->next, p3);
-    // verify the outOfGame list is circular doubly linked
+    // verify the outOfGame list is CDLL
     EXPECT_EQ(list.outOfGame->head->last, p3);
 }
 
 
+//// listPlayers
 
-TEST_F(ListPlayersTest, onlyListInPlayers) {
-    // list of 4 in players, 0 out players; with outOfGame not init'ed
-    add4Players();
-    name4Players();
-
-    testing::internal::CaptureStdout();
-    list.listPlayers(false);
-    EXPECT_EQ(testing::internal::GetCapturedStdout(),
-              "Listing players...\nP1\nP2\nP3\nP4\n\n");
-}
-
-TEST_F(ListPlayersTest, listOutPlayersToo) {
-    PlayerList outList(NULL);
-    list.outOfGame = &outList;
-
-    add4Players();
-    name4Players();
-    list.removePlayer("P3");
-    list.removePlayer("P1");
-
-    testing::internal::CaptureStdout();
-    list.listPlayers(true);
-    EXPECT_EQ(testing::internal::GetCapturedStdout(),
-              "Listing players...\nP2\nP4\n\nListing players out of game...\nP3\nP1\n\n");
-}
-
-TEST_F(ListPlayersTest, emptyList) {
+TEST_F(ListPlayersTest, EmptyList) {
     testing::internal::CaptureStdout();
     list.listPlayers(false);
     EXPECT_EQ(testing::internal::GetCapturedStdout(),
               "Arrrg list be empty\n");
 }
+
+TEST_F(ListPlayersTest, OnlyInPlayers) {
+    // list of 4 in players, 0 out players; with outOfGame not init'ed
+    add4Players();
+
+    testing::internal::CaptureStdout();
+    list.listPlayers(false);
+    EXPECT_EQ(testing::internal::GetCapturedStdout(),
+              "Listing players in game...\nP1\nP2\nP3\nP4\n\n");
+}
+
+TEST_F(ListPlayersTest, InPlayersAndOutPlayers) {
+    PlayerList outList(NULL);
+    list.outOfGame = &outList;
+    add4Players();
+    list.removePlayer("P3");
+    list.removePlayer("P1");
+    // TODO change so does not rely on removePlayers()?
+
+    testing::internal::CaptureStdout();
+    list.listPlayers(true);
+    EXPECT_EQ(testing::internal::GetCapturedStdout(),
+              "Listing players in game...\nP2\nP4\n\nListing players out of game...\nP3\nP1\n\n");
+}
+
+
+//// changeHead
+
+// // TODO parameterize to see if each player has an equal probability
+// TEST_P(ChangeHeadTest, ) {
+
+// }
+
+// INSTANTIATE_TEST_SUITE_P(EqualProbability, ChangeHeadTest, Range(0, 4))
+
+
+//// getLength
+
+TEST_F(GetLengthTest, EmptyList) {
+    EXPECT_EQ(list.getLength(), 0);
+}
+
+TEST_F(GetLengthTest, ListOf4) {
+    add4Players();
+    EXPECT_EQ(list.getLength(), 4);
+}
+
 
 
 

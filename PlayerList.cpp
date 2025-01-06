@@ -91,7 +91,7 @@ void PlayerList::listPlayers(bool listOutPlayers/*=0*/) {
     }
     else {
         Player *curr = head;
-        cout << "Listing players...\n";
+        cout << "Listing players in game...\n";
         do {
             cout << curr->name << "\n";
             curr = curr->next;

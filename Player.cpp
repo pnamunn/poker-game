@@ -14,12 +14,12 @@ Player::Player() {}
 void Player::placeBet(int num) {
     if(num < this->chips) {        // Player doesn't bet all their chips
         // cout << this->name << " bets " << num << "\n";
-        Dealer::addToPool(num);
+        Dealer::addToPot(num);
         this->chips -= num;
     }
     else {      // Player goes all in
         // cout << this->name << " goes all in with " << this->chips << "\n";
-        Dealer::addToPool(this->chips);
+        Dealer::addToPot(this->chips);
         this->chips = 0;
     }
 }
@@ -76,7 +76,6 @@ void Player::outputChipsAndCards() {
          << this->cards[1].toString() << "\n"
          << right;  // reset to default right
 }
-
 
 
 //  H   E   L   P   E   R   S

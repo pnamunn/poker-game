@@ -8,7 +8,7 @@
 // TODO make singleton?
 class Dealer {      // class carries out the game functions
     private:
-        static int pool;
+        static int pot;
         static int minBet;
         static int roundMin;    // Call value for this round.  Raises must be above this value.
         
@@ -26,8 +26,8 @@ class Dealer {      // class carries out the game functions
         /* Prompts Player after Dealer to post small blind. */
         static void smallBlind(bool big);
 
-        /* Deal cards to Players in PlayerList instance. */
-        static void dealCards(PlayerList &inPlayers, Deck &deck);
+        /* Deal hole cards to each Players in PlayerList. */
+        static void dealHoleCards(PlayerList &inPlayers, Deck &deck);
 
         /* Reveal a community card. */
         static void flipCard();
@@ -39,7 +39,7 @@ class Dealer {      // class carries out the game functions
         /* Pre-betting phase where first player sets small blind,
         second player sets big blind, and remaining players 
         go around the table. */
-        static void preflopRound(PlayerList &players);
+        //static void preflopRound(bool useBlinds, PlayerList &players);
 
 
         //  S   E   T   T   E   R   S   &
@@ -47,7 +47,8 @@ class Dealer {      // class carries out the game functions
 
         static void outputCommunityCards();
 
-        static void addToPool(int num);
+        static void addToPot(int num);
+        static const int getPotValue();
 
         static void setMinBet(int num);
         static const int getMinBet();

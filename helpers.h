@@ -10,12 +10,22 @@ enum conditions {GTE, GT};  // greater than or equal to (>=), greater than (>)
 
 static int errorCheck(int checkVar, conditions condition, int checkVal,
                       string fail_msg) {
-    bool inputErrorFlag = 1;
-    do {
+    bool inputErrorFlag = true;
+    while(inputErrorFlag == true) {
+        if(cin.fail()) {
+            cin.clear();    // clear fail bit
+            // cin.ignore();
+
+            cin.ignore(1000, '\n');     // flush cin buffer
+            cout << "Dumbass, that's a letter.  Go again: ";
+            cin >> checkVar;
+            continue;
+        }
+
         switch(condition) { // print out fail msg if they do not meet the condition & break
             case GTE:
                 if(checkVar >= checkVal) {
-                    inputErrorFlag = 0;
+                    inputErrorFlag = false;
                     break;
                 }
                 // print fail msg & accept user input again
@@ -25,15 +35,16 @@ static int errorCheck(int checkVar, conditions condition, int checkVal,
 
             case GT:
                 if(checkVar > checkVal) {
-                    inputErrorFlag = 0;
+                    inputErrorFlag = false;
                     break;
                 }
                 cout << fail_msg;
                 cin >> checkVar;
             break;
         }
+
         cout << "\n";
-    } while(inputErrorFlag == 1);
+    }
     return checkVar;
 }
 

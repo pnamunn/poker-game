@@ -12,16 +12,8 @@ using namespace std;
 Player::Player() {}
 
 void Player::placeBet(int num) {
-    if(num < this->chips) {        // Player doesn't bet all their chips
-        // cout << this->name << " bets " << num << "\n";
-        Dealer::addToPot(num);
-        this->chips -= num;
-    }
-    else {      // Player goes all in
-        // cout << this->name << " goes all in with " << this->chips << "\n";
-        Dealer::addToPot(this->chips);
-        this->chips = 0;
-    }
+    Dealer::addToPot(num);
+    this->chips -= num;
 }
 
 void Player::fold(Player &player) {     // sit out the game

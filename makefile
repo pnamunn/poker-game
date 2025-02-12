@@ -7,7 +7,7 @@ main : $(OBJECTS) helpers.h
 	g++ $(OBJECTS) helpers.h -o main
 
 # Objects
-main.o : main.cpp
+main.o : main.cpp helpers.h
 	g++ -c main.cpp
 
 Card.o : Card.cpp Card.h

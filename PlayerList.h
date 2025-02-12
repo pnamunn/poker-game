@@ -23,8 +23,9 @@ class PlayerList {
         void addPlayer(Player &player, int num=0);
 
         /* Remove Player from PlayerList linked list.
-        If the outOfGame datamember has been init'ed, adds it onto that list. */
-        void removePlayer(string name);
+        If the outOfGame datamember has been init'ed, adds it onto that list.
+        Returns pointer to Player before the removed Player. */
+        Player* removePlayer(string name);
 
         /* List all Players in the PlayerList instance. */
         void listPlayers(bool listOutPlayers=0);

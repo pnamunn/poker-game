@@ -46,8 +46,11 @@ void PlayerList::addPlayer(Player &player, int num/*=0*/) {
     // cout << player.name << " added  " << &player << "\n";
 }
 
-void PlayerList::removePlayer(string name) {
+// TODO redo unit tests to match changed functionality
+    // (returning pointer to preceeding player)
+Player* PlayerList::removePlayer(string name) {
     Player *curr = head;
+    Player* preceedingPlayer = NULL;
     bool found = false;
     do {
         if(curr->name == name) {
@@ -55,12 +58,15 @@ void PlayerList::removePlayer(string name) {
                 if((head->next == head) && (head->last == head)) {  // if only one player left in list
                     head = NULL;
                     found = true;
+                    preceedingPlayer = NULL;    // no preceeding
                     break;
                 }
                 else {
                     head = curr->next;  // next in line becomes head
                 }
             }
+            
+            preceedingPlayer = curr->last;
             (curr->last)->next = curr->next;
             (curr->next)->last = curr->last;
             found = true;
@@ -80,8 +86,11 @@ void PlayerList::removePlayer(string name) {
         }
     }
     else {
-        cout << "Cannot remove.  Player name '" << name << "' not found.\n";
+        cerr << "Error: Cannot remove.  Player name '" << name << "' not found.\n";
+        exit(-1);
     }
+    
+    return preceedingPlayer;
 }
 
 void PlayerList::listPlayers(bool listOutPlayers/*=0*/) {

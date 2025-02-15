@@ -2,24 +2,14 @@
 #include "Player.h"
 #include <iostream>
 #include <cmath>
+#include <variant>
 using namespace std;
 
 
-PlayerList::PlayerList(PlayerList *outOfGameList) {
+PlayerList::PlayerList(PlayerList* outOfGameList, PlayerList* allInList) {
     this->outOfGame = outOfGameList;
+    this->allIn = allInList;
 }
-
-
-// PlayerList::PlayerList(PlayerList &copyTarget) {
-//     head = new Player;
-//     *head = *(copyTarget.head);
-
-//     tail = new Player;
-//     *tail = *(copyTarget.tail);
-
-//     length = copyTarget.length;
-// }
-
 
 void PlayerList::addPlayer(Player &player, int num/*=0*/) {
     if(num != 0) {      // optional parameter, to be used when Player is new & does not have a name yet
@@ -47,49 +37,84 @@ void PlayerList::addPlayer(Player &player, int num/*=0*/) {
 }
 
 // TODO redo unit tests to match changed functionality
-    // (returning pointer to preceeding player)
-Player* PlayerList::removePlayer(string name) {
-    Player *curr = head;
+    // (returning pointer to preceeding player
+    // & supporting a variant)
+// TODO make this work with either a name arg or a Player& arg
+    // make both args optional
+    // want to be able to remove current player
+Player* PlayerList::removePlayer(PlayerList* dest, variant<Player*, string> player) {
+    // bool found = false;
     Player* preceedingPlayer = NULL;
-    bool found = false;
-    do {
-        if(curr->name == name) {
-            if(curr == head) {  // if removing head of list
-                if((head->next == head) && (head->last == head)) {  // if only one player left in list
-                    head = NULL;
-                    found = true;
-                    preceedingPlayer = NULL;    // no preceeding
-                    break;
-                }
-                else {
-                    head = curr->next;  // next in line becomes head
-                }
-            }
-            
-            preceedingPlayer = curr->last;
-            (curr->last)->next = curr->next;
-            (curr->next)->last = curr->last;
-            found = true;
-            break;
-        }
-        curr = curr->next;
-    } while(curr != head);
-    // cout << "sucessfully removed from inlist";
+    Player* foundPlayer = NULL;
 
-    if(found) {
-        if(outOfGame != NULL) {   // if the outOfGame list is being used
-            outOfGame->addPlayer(*curr);  // add player to outList
+    // player arg is string datatype, so we'll search for the Player by their name datamember
+    if(player.index()) {
+        string name = get<string>(player);
+        Player* curr = head;
+        do {
+            if(curr->name == name) {
+                if(curr == head) {  // if removing head of list
+                    if((head->next == head) && (head->last == head)) {  // if there's only 1 player in the list
+                        head = NULL;
+                        preceedingPlayer = NULL;    // no preceeding
+                        // found = true;
+                        foundPlayer = curr;
+                        break;
+                    }
+                    else {
+                        head = curr->next;  // next in line becomes head
+                    }
+                }
+                
+                preceedingPlayer = curr->last;
+                (curr->last)->next = curr->next;
+                (curr->next)->last = curr->last;
+                // found = true;
+                foundPlayer = curr;
+                break;
+            }
+            curr = curr->next;
+        } while(curr != head);
+    }
+
+    // player arg is Player* datatype, so we'll remove the Player the ptr points to
+    else {
+        Player* ptr = get<Player*>(player);
+        if(ptr == NULL) {
+            cerr << "Error: a NULL Player* ptr was passed to removePlayer()\n";
+            exit(-1);
+        }
+        if((ptr == head) && (ptr->last == ptr)) {    // if ptr is the only Player in the list
+            head = NULL;
+            preceedingPlayer = NULL;
+        }
+        else {
+            if(ptr == head) { head = ptr->next; }
+            preceedingPlayer = ptr->last;
+            (ptr->last)->next = ptr->next;
+            (ptr->next)->last = ptr->last;
+        }
+        foundPlayer = ptr;
+    }
+
+    // Now add the found Player to the desired dest
+    if(foundPlayer != NULL) {
+        if(dest != NULL) {
+            dest->addPlayer(*foundPlayer);
             // cout << "Player '" << name << "' removed and placed in outList.\n";
         }
         else {
             // cout << "Player '" << name << "' removed.\n";
+            cerr << "Error: a NULL PlayerList* dest was passed to removePlayer()\n";
+            exit(-1);
         }
     }
     else {
-        cerr << "Error: Cannot remove.  Player name '" << name << "' not found.\n";
+        // cerr << "Error: Cannot remove.  Player name '" << name << "' not found.\n";
+        cerr << "Error: Cannot remove.  Player not found.\n";
         exit(-1);
     }
-    
+
     return preceedingPlayer;
 }
 

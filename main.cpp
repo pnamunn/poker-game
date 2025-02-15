@@ -29,13 +29,14 @@ using namespace std;
 
 int main() {
     srand(time(NULL));      // seed
-    PlayerList outPlayers(NULL);
-    PlayerList players(&outPlayers);
+    PlayerList outPlayers(NULL, NULL);  // creates a list to hold players that got out
+    PlayerList allInPlayers(NULL, NULL);    // creates a list to hold players that went all-in
+    PlayerList players(&outPlayers, &allInPlayers);     // creates a list of active players, and gives an access point to the out & all-in lists
     Deck deck;
 
     int numPlayers;
     cout << "Enter number of players: ";
-    cin >> numPlayers;  // TODO error checking for at least 2 players
+    cin >> numPlayers;
     numPlayers = errorCheck(numPlayers, GT, 1,
                             "You need more than 1 live player to participate. Try again: ");
                            
@@ -45,45 +46,31 @@ int main() {
     // cout << "Do you want to use blinds? (y/n): ";
     // cin >> useBlinds;   // TODO error checking
 
-
     for (int i=1; i <= numPlayers; i++) {
-        Player *player = new Player();
+        Player* player = new Player();
         players.addPlayer(*player, i);
     }
-    
-    // players.listPlayers();
-    // cout << "done listing players";
-    // players.removePlayer("Player2");
-    // cout << "just removed player2";
-    // players.listPlayers(true);
-    // cout << "just listed players after moving one to outList";
-
+    int totalPlayers = players.getLength();
 
     Dealer::determineDealer(players);
     Dealer::dealHoleCards(players, deck);
     clearConsole();
-
-
-    // Dealer::setMinBet(5);
-    // Dealer::preflopRound(players);
-    // Dealer::goAroundTheTable(players);    // TODO go thru just the remaining players, & continue until an ante is agreed on
 
     int ante = 0;   // have to reset to 0 at the beginning of each round
     int bet;
     int raiseVal;
     char action;
     bool inputErrorFlag = false;
+    bool allowOneMoreActionFlag = false;
     // TODO player doesn't get any more action prompts if they decided to go all-in
-    // TODO skip to Showdown if all players are all-in
-    int allInPlayers = 0;
 
     // Player *currPlayer = players.head->next;    // the person after the dealer gets the first action turn
     
 
     // PRE-FLOP
     int agreementCount = 0;
-    int inPlayerCount = players.getLength();
-    Player *currPlayer = players.head;
+    // int inPlayerCount = players.getLength();
+    Player* currPlayer = players.head;
 
     
     if(useBlinds) {
@@ -134,7 +121,7 @@ int main() {
 
     // until a bet is made, your options are to
         // check (make no bet) or open (start the betting) or fold
-        while(agreementCount != inPlayerCount) {
+        while(agreementCount != players.getLength()) {
             currPlayer = currPlayer->next;  // move on to next player
             inputErrorFlag = false;
 
@@ -145,7 +132,7 @@ int main() {
             << setw(15) << " "
             << "The pot: " << Dealer::getPotValue() << "\n\n";
 
-            cout << agreementCount << "/" << inPlayerCount
+            cout << agreementCount << "/" << players.getLength()
                     << " players have agreed on an ante of " << ante << " chips.\n\n";
 
             // If betting hasn't opened yet, give them these options
@@ -181,14 +168,15 @@ int main() {
                                 cout << setw(10) << "You open by going all-in with " << currPlayer->chips << " chips.\n";
                                 currPlayer->placeBet(currPlayer->chips);
                                 ante = currPlayer->chips;
+                                currPlayer = players.removePlayer(players.allIn, currPlayer->name);
                             }
                             agreementCount = 1;
                         break;
 
                         case 'f':   // FOLD
                             cout << setw(10) << "You chose to fold.\n";
-                            // remove the current player & then have currPlayer point to the player before the removed player
-                            currPlayer = players.removePlayer(currPlayer->name);
+                            // remove the current player & then have currPlayer point to the preceeding player
+                            currPlayer = players.removePlayer(players.outOfGame, currPlayer->name);
                         break;
 
                         default:
@@ -228,6 +216,7 @@ int main() {
                             else {
                                 cout << setw(10) << "You call & go all-in with " << currPlayer->chips << " chips.\n";
                                 currPlayer->placeBet(currPlayer->chips);
+                                currPlayer = players.removePlayer(players.allIn, currPlayer->name);
                             }
                             agreementCount++;
                         break;
@@ -249,6 +238,7 @@ int main() {
                                 cout << setw(10) << "Trying to raise the ante by " << raiseVal << "chips, you go all-in with " << currPlayer->chips << " chips.\n";
                                 ante = currPlayer->chips;
                                 currPlayer->placeBet(currPlayer->chips);
+                                currPlayer = players.removePlayer(players.allIn, currPlayer->name);
                             }
                             agreementCount = 1;
                         break;
@@ -256,7 +246,7 @@ int main() {
                         case 'f':   // FOLD
                             cout << setw(10) << "You chose to fold.\n";
                             // remove the current player & then have currPlayer point to the player before the removed player
-                            currPlayer = players.removePlayer(currPlayer->name);
+                            currPlayer = players.removePlayer(players.outOfGame, currPlayer->name);
                         break;
 
                         default:
@@ -271,16 +261,25 @@ int main() {
                 inputErrorFlag = false;     // reset flag
             }
 
-            inPlayerCount = players.getLength();    // re-evaluate how many players are still in
+            // inPlayerCount = players.getLength();    // re-evaluate how many players are still in
             
-            // all other players folded, so players.head wins the pot
-            if(inPlayerCount == 1) {
-                cout << players.head->name << " wins bc everyone else wussed out/n";
-                exit(1);    // TODO change to instead move on to another game
+            if(allowOneMoreActionFlag) {
+                break;
             }
-        } // end while(agreementCount != inPlayerCount) loop
 
-        // If you got here, agreementCount == inPlayerCount
+            // If there's only 1 player left in
+            if(players.getLength() == 1) {
+                if(players.outOfGame->getLength() == totalPlayers - 1) {    // all other players folded
+                    cout << players.head->name << " wins bc everyone else wussed out/n";
+                    exit(1);    // TODO change to instead move on to another game
+                }
+                else {  // all players have gone all-in || some folded and some went all-in
+                    allowOneMoreActionFlag = true;
+                }
+            }
+        } // end while(agreementCount != players.getLength()) loop
+
+        // If you got here, agreementCount == players.getLength()
         cout << "\nGoddamm, you finally agreed on an ante in the PreFlop, we can move on...\n";
         cout << "Everyone agreed on the ante of " << ante << "\n";
         enterToContinue();

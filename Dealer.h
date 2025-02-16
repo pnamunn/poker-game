@@ -6,7 +6,10 @@
 #define DEALER_H
 
 // TODO make singleton?
-class Dealer {      // class carries out the game functions
+
+// Class used to carry out the game functions
+// Class of static datamembers to facilitate program-wide shared data
+class Dealer {
     private:
         static int pot;
         static int minBet;
@@ -15,6 +18,10 @@ class Dealer {      // class carries out the game functions
     public:
         // Card cards[5];
         static vector<Card> communityCards;
+        static int totalPlayerCount;
+        static bool allOthersAllInOrFoldedFlag;
+        static bool allOthersFoldedFlag;
+
 
         /* Default Constructor */
         Dealer();
@@ -31,6 +38,10 @@ class Dealer {      // class carries out the game functions
 
         /* Reveal a community card. */
         static void flipCard();
+
+        /* Give all eligible players their actions. */
+        static void giveActions(PlayerList& inPlayers, bool preFlop=false);
+
 
         /* Go thru list of players, showing them their info,
         and prompting them for an action. */
